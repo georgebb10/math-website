@@ -1,29 +1,30 @@
 let correctAnswer = null;
 
-// Fetch a new AI-generated logarithms question from the server
 async function loadQuestion(difficulty = 'easy') {
   try {
     const response = await fetch(`/api/question?topic=logarithms&difficulty=${difficulty}`);
     
-    // Parse JSON returned by the server
-    const data = await response.json();
-    
-    // Update the question text on the page
-    document.getElementById('question').innerText = data.question;
-    
-    // Store the correct answer for checking
-    correctAnswer = Number(data.answer);
-    
-    // Clear previous result
+    // Safely parse JSON
+    let data;
+    try {
+      data = await response.json();
+    } catch (err) {
+      console.error("Failed to parse JSON:", err);
+      document.getElementById('question').innerText = "Failed to parse question JSON.";
+      return;
+    }
+
+    // Display question and store answer
+    document.getElementById('question').innerText = data.question || "No question returned";
+    correctAnswer = Number(data.answer) || null;
     document.getElementById('result').innerText = '';
-    
-  } catch (error) {
-    console.error("Failed to load question:", error);
-    document.getElementById('question').innerText = "Failed to load question. Try again later.";
+
+  } catch (err) {
+    console.error("Failed to fetch question:", err);
+    document.getElementById('question').innerText = "Failed to load question. Check console.";
   }
 }
 
-// Check user input against the correct answer
 function checkAnswer() {
   const userAnswer = Number(document.getElementById('answer').value);
 
@@ -39,5 +40,5 @@ function checkAnswer() {
   }
 }
 
-// Load default easy question when the page first opens
+// Load default easy question
 loadQuestion();
