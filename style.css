@@ -1,0 +1,4 @@
+body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: Arial, sans-serif; background: white; }
+.grid { display: grid; grid-template-columns: 200px 200px; grid-template-rows: 100px 100px; gap: 30px; }
+.box { border: 3px solid black; display: flex; justify-content: center; align-items: center; text-decoration: none; color: black; font-weight: bold; font-size: 18px; }
+.box:hover { background: #f0f0f0; }
